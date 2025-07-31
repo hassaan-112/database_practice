@@ -1,6 +1,9 @@
+import 'package:database_practice/res/components/buttonComponent.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 
+import '../res/colors/appColors.dart';
 import '../view_model/authViewModel/authVM.dart';
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -22,7 +25,9 @@ class _HomeScreenState extends State<HomeScreen> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Expanded(child:
+          SizedBox(
+              height: 500.h,
+              child:
           Obx(()=>ListView.builder(
                 itemCount: authVM.users.length,
                 itemBuilder:(context,index){
@@ -35,7 +40,10 @@ class _HomeScreenState extends State<HomeScreen> {
                   );
 
                 }),
-          ))
+          )),
+          ButtonComponent(onPressed: (){
+            Get.toNamed("/NotesScreen",arguments: authVM.loggedUser.value);
+          },text: "Notes Screen",textColor: AppColors.white,width: double.infinity,)
         ],
       ),
     );

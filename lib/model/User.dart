@@ -17,5 +17,20 @@ class User{
       'password':this.password
     };
   }
-
+}
+class Note{
+  int? id;
+  String? note;
+  String? email;
+  Note({this.id,this.note,this.email});
+  Note.fromMap(Map<String,dynamic> res){
+    id =res['id'];
+    note =res['note'];
+    email =res['email'];
+  }
+  Map<String,dynamic> toMap(){
+    return {
+      'id':this.id,
+      'note':this.note,
+      'email':this.email};}
 }

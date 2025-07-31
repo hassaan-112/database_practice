@@ -2,7 +2,9 @@ class PageNames{
   PageNames._();
 
 
-  static const String loginScreen = "/";
+  static const String signupScreen = "/";
   static const String homeScreen = "/HomeScreen";
+  static const String loginScreen = "/LoginScreen";
+  static const String notesScreen = "/NotesScreen";
 
 }

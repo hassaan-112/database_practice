@@ -15,6 +15,10 @@ class DBHelper{
   static final String colName = 'name';
   static final String colPassword = 'password';
 
+  static final String table2Name = 'notes';
+  static final String colId = 'id';
+  static final String colNote = 'note';
+
   Database? myDB;
 
   Future<Database> getDB() async {
@@ -26,11 +30,11 @@ class DBHelper{
     Directory directory = await getApplicationDocumentsDirectory();
     String dbPath = join(directory.path,'users.db');
     return await openDatabase(dbPath,version: 1,onCreate: (db,version){
+      db.execute('PRAGMA foreign_keys = ON');
       db.execute('CREATE TABLE $tableName($colEmail TEXT PRIMARY KEY,$colName TEXT,$colPassword TEXT)');
+      db.execute('CREATE TABLE $table2Name($colId INTEGER PRIMARY KEY AUTOINCREMENT,$colNote TEXT,$colEmail TEXT REFERENCES $tableName($colEmail))');
+
     });
-
-
-
   }
   //queries
   //add user
@@ -55,4 +59,29 @@ class DBHelper{
     int a =await db.delete(tableName,where:'$colEmail=?',whereArgs: [email]);
     return a>0;
   }
+
+  Future<bool> addNote({required String note,required String email})async{
+    Database db = await getDB();
+    int rowsAffected= await db.insert(table2Name,{colNote:note,colEmail:email});
+    Utils.toast("Note Added", Colors.green);
+    return rowsAffected>0;
+  }
+
+  Future<List<Map<String,dynamic>>> getAllNotes(String email)async{
+    Database db =await getDB();
+    List<Map<String,dynamic>> notes = await db.query(table2Name,where:'$colEmail=?',whereArgs: [email]);
+    return notes;
+  }
+  Future<List<Map<String,dynamic>>> getNote()async{
+    Database db =await getDB();
+    List<Map<String,dynamic>> notes = await db.query(table2Name);
+    return notes;
+  }
+
+  Future<bool> deleteNote(int id) async {
+    Database db =await getDB();
+    int a =await db.delete(table2Name,where:'$colId=?',whereArgs: [id]);
+    return a>0;
+  }
+
 }

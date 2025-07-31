@@ -8,14 +8,14 @@ import '../res/components/buttonComponent.dart';
 import '../utils/Utils.dart';
 import '../view_model/authViewModel/authVM.dart';
 
-class SignupScreen extends StatefulWidget {
-  const SignupScreen({super.key});
+class LoginScreen extends StatefulWidget {
+  const LoginScreen({super.key});
 
   @override
-  State<SignupScreen> createState() => _SignupScreenState();
+  State<LoginScreen> createState() => _LoginScreenState();
 }
 
-class _SignupScreenState extends State<SignupScreen> {
+class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
     final authVM = Get.put(AuthViewModel());
@@ -32,7 +32,7 @@ class _SignupScreenState extends State<SignupScreen> {
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     Text(
-                      "SignUp",
+                      "Login",
                       style: Theme.of(context).textTheme.displayLarge,
                     ),
                     10.horizontalSpace,
@@ -45,42 +45,17 @@ class _SignupScreenState extends State<SignupScreen> {
                   elevation: 5,
                   color: Theme.of(context).cardColor,
                   child: Obx(
-                    () => SizedBox(
-                      height: 430.h,
+                        () => SizedBox(
+                      height: 400.h,
                       child: Padding(
                         padding: EdgeInsets.symmetric(horizontal: 20.w),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Form(
-                              key: authVM.sFormKey,
+                              key: authVM.fFormKey,
                               child: Column(
                                 children: [
-                                  TextFormFieldComponent(
-                                    hintText: "Name",
-                                    controller: authVM.nameController,
-                                    keyboardType: TextInputType.text,
-                                    focusNode: authVM.nameFocusNode,
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return ("Please Enter Name");
-                                      }
-                                      return null;
-                                    },
-                                    onSubmited: (value) {
-                                      Utils.fieldFocusChange(
-                                        context,
-                                        authVM.nameFocusNode,
-                                        authVM.emailFocusNode,
-                                      );
-                                    },
-                                    onTapedOutside: (v) {
-                                      authVM.nameFocusNode.unfocus();
-                                    },
-                                    autoFocus: true,
-                                    suffixIcon: Icons.person,
-                                  ),
-                                  10.verticalSpace,
                                   TextFormFieldComponent(
                                     hintText: "Email",
                                     controller: authVM.emailController,
@@ -91,8 +66,6 @@ class _SignupScreenState extends State<SignupScreen> {
                                         return ("Please Enter Email");
                                       } else if (!EmailValidator.validate(value)){
                                         return ("Please Enter Valid Email");}
-                                      else if (authVM.users.any((element) =>element.email==value.toLowerCase())){
-                                        return ("Email Already Exist");}
                                       return null;
                                     },
                                     onSubmited: (value) {
@@ -137,48 +110,18 @@ class _SignupScreenState extends State<SignupScreen> {
                                         : Icons.visibility_off,
                                     suffixIconbuttonfunction: () {
                                       authVM.isPasswordVisible.value =
-                                          !authVM.isPasswordVisible.value;
+                                      !authVM.isPasswordVisible.value;
                                     },
                                   ),
                                   10.verticalSpace,
-                                  TextFormFieldComponent(
-                                    hintText: "Confirm Password",
-                                    controller:
-                                        authVM.confirmPasswordController,
-                                    keyboardType: TextInputType.visiblePassword,
-                                    focusNode: authVM.confirmPasswordFocusNode,
-                                    validator: (value) {
-                                      if (value!.isEmpty) {
-                                        return ("Please Enter Password");
-                                      } else if (value !=
-                                          authVM.passwordController.text){
-                                        return ("Password Not Match");}
-                                      return null;
-                                    },
-                                    onSubmited: (value) {
-                                      authVM.confirmPasswordFocusNode.unfocus();
-                                    },
-                                    onTapedOutside: (v) {
-                                      authVM.confirmPasswordFocusNode.unfocus();
-                                    },
-                                    autoFocus: false,
-                                    obscureText: authVM.isPasswordVisible.value,
-                                    suffixIcon: authVM.isPasswordVisible.value
-                                        ? Icons.visibility
-                                        : Icons.visibility_off,
-                                    suffixIconbuttonfunction: () {
-                                      authVM.isPasswordVisible.value =
-                                          !authVM.isPasswordVisible.value;
-                                    },
-                                  ),
                                 ],
                               ),
                             ),
                             30.verticalSpace,
                             ButtonComponent(
-                              text: "Sign Up",
+                              text: "Login",
                               onPressed: () async {
-                                authVM.signup();
+                                authVM.login();
                                 // await authVM.getUsers();
                                 // authVM.showUsers();
                               },
@@ -186,10 +129,11 @@ class _SignupScreenState extends State<SignupScreen> {
                               textColor: AppColors.white,
                               isLoading: authVM.isLoading.value,
                             ),
+
                             TextButton(onPressed: (){
-                               authVM.clearController();
-                              Get.offAndToNamed('/LoginScreen');
-                            }, child: Text("login Screen")),
+                              authVM.clearController();
+                              Get.offAndToNamed("/");
+                            }, child: Text("Signup Screen")),
                           ],
                         ),
                       ),
