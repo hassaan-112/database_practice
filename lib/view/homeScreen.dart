@@ -52,6 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ButtonComponent(onPressed: (){
 
             },text: "Image Screen",textColor: AppColors.white,width: double.infinity,),
+
           ],
         ),
       ),
