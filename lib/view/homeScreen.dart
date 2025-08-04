@@ -50,7 +50,7 @@ class _HomeScreenState extends State<HomeScreen> {
             },text: "Notes Screen",textColor: AppColors.white,width: double.infinity,),
             20.verticalSpace,
             ButtonComponent(onPressed: (){
-
+              Get.toNamed("/ImageScreen");
             },text: "Image Screen",textColor: AppColors.white,width: double.infinity,),
 
           ],

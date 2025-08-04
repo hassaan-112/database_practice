@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
@@ -19,6 +20,9 @@ class DBHelper{
   static final String colId = 'id';
   static final String colNote = 'note';
 
+  static final String table3Name = 'images';
+  static final String colImage = 'image';
+
   Database? myDB;
 
   Future<Database> getDB() async {
@@ -32,6 +36,7 @@ class DBHelper{
     return await openDatabase(dbPath,version: 1,onCreate: (db,version) async {
       await db.execute('CREATE TABLE $tableName($colEmail TEXT PRIMARY KEY,$colName TEXT,$colPassword TEXT)');
       await db.execute('CREATE TABLE $table2Name($colId INTEGER PRIMARY KEY AUTOINCREMENT,$colNote TEXT,$colEmail TEXT,FOREIGN KEY($colEmail) REFERENCES $tableName($colEmail) ON DELETE CASCADE)');
+      await db.execute('CREATE TABLE $table3Name($colId INTEGER PRIMARY KEY AUTOINCREMENT,$colImage BLOB)');
 
     },
     onOpen: (db)async{
@@ -85,6 +90,22 @@ class DBHelper{
   Future<bool> deleteNote(int id) async {
     Database db =await getDB();
     int a =await db.delete(table2Name,where:'$colId=?',whereArgs: [id]);
+    return a>0;
+  }
+  Future<bool> addImage({required Uint8List image})async{
+    Database db = await getDB();
+    int rowsAffected= await db.insert(table3Name,{colImage:image});
+    Utils.toast("Image Added", Colors.green);
+    return rowsAffected>0;
+  }
+  Future<List<Map<String,dynamic>>> getImage()async{
+    Database db =await getDB();
+    List<Map<String,dynamic>> images = await db.query(table3Name);
+    return images;
+  }
+  Future<bool> deleteAllImages() async {
+    Database db =await getDB();
+    int a =await db.delete(table3Name);
     return a>0;
   }
 

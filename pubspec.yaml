@@ -37,6 +37,7 @@ dependencies:
   flutter_screenutil:
   email_validator: ^3.0.0
   fluttertoast:
+  image_picker: 
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.

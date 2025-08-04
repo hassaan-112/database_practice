@@ -54,10 +54,6 @@ class AuthViewModel extends GetxController{
       }
     }
   }
-
-
-
-
   Future<void> getUsers()async{
     users.value = await _authRepo.getUsers();
     update();
