@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../database/database.dart';
 import '../../model/User.dart';
 import '../../repository/notesRepo.dart';
+import '../../utils/Utils.dart';
 
 class NotesVM extends GetxController{
   final _notesRepo = NotesRepository();
@@ -27,8 +28,11 @@ class NotesVM extends GetxController{
   }
   Future<void> addNote()async{
     if(notesFormKey.currentState!.validate()){
-      await _notesRepo.addNote(note: noteController.text, email: loggedUser.value.email!.toString().toLowerCase());
+      await _notesRepo.adddNote(note: noteController.text, email: loggedUser.value.email!);
       await getNotes();
+    }
+    else{
+      Utils.toast("Please Enter Text", Colors.red);
     }
 
   }
@@ -36,5 +40,10 @@ class NotesVM extends GetxController{
   Future<void> getallNotes()async{
     await _notesRepo.getallNotes();
 
+  }
+
+  Future<void> deleteNote(int id) async {
+    await _notesRepo.deleteNote(id);
+    await getNotes();
   }
 }

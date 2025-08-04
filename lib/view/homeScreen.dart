@@ -21,30 +21,39 @@ class _HomeScreenState extends State<HomeScreen> {
         title: const Text("Home"),
         centerTitle: true,
       ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(
-              height: 500.h,
-              child:
-          Obx(()=>ListView.builder(
-                itemCount: authVM.users.length,
-                itemBuilder:(context,index){
-                  return ListTile(
-                    title: Text(authVM.users[index].name!),
-                    subtitle: Text(authVM.users[index].email!),
-                    trailing: IconButton(onPressed: (){
-                      authVM.deleteUser(authVM.users[index].email!);
-                    }, icon: const Icon(Icons.delete)),
-                  );
+      body: Padding(
+        padding:  EdgeInsets.symmetric(horizontal: 20.w),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            SizedBox(
+                height: 500.h,
+                child:
+            Obx(()=>ListView.builder(
+                  itemCount: authVM.users.length,
+                  itemBuilder:(context,index){
+                    return Card(
+                      child: ListTile(
+                        title: Text(authVM.users[index].name!),
+                        subtitle: Text(authVM.users[index].email!),
+                        trailing: IconButton(onPressed: (){
+                          authVM.deleteUser(authVM.users[index].email!);
+                        }, icon: const Icon(Icons.delete)),
+                      ),
+                    );
 
-                }),
-          )),
-          ButtonComponent(onPressed: (){
-            Get.toNamed("/NotesScreen",arguments: authVM.loggedUser.value);
-          },text: "Notes Screen",textColor: AppColors.white,width: double.infinity,)
-        ],
+                  }),
+            )),
+            ButtonComponent(onPressed: (){
+              Get.toNamed("/NotesScreen",arguments: authVM.loggedUser.value);
+            },text: "Notes Screen",textColor: AppColors.white,width: double.infinity,),
+            20.verticalSpace,
+            ButtonComponent(onPressed: (){
+
+            },text: "Image Screen",textColor: AppColors.white,width: double.infinity,),
+          ],
+        ),
       ),
     );
   }

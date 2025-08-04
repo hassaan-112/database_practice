@@ -18,7 +18,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   @override
   Widget build(BuildContext context) {
-    final authVM = Get.put(AuthViewModel());
+    final authVM = Get.find<AuthViewModel>();
     return Scaffold(
       body: SafeArea(
         child: Padding(
@@ -121,7 +121,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             ButtonComponent(
                               text: "Login",
                               onPressed: () async {
-                                authVM.login();
+                                await authVM.login();
                                 // await authVM.getUsers();
                                 // authVM.showUsers();
                               },

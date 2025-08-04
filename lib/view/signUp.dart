@@ -18,7 +18,7 @@ class SignupScreen extends StatefulWidget {
 class _SignupScreenState extends State<SignupScreen> {
   @override
   Widget build(BuildContext context) {
-    final authVM = Get.put(AuthViewModel());
+    final authVM = Get.find<AuthViewModel>();
     return Scaffold(
       body: SafeArea(
         child: Padding(

@@ -29,12 +29,15 @@ class DBHelper{
   Future<Database> openDB() async {
     Directory directory = await getApplicationDocumentsDirectory();
     String dbPath = join(directory.path,'users.db');
-    return await openDatabase(dbPath,version: 1,onCreate: (db,version){
-      db.execute('PRAGMA foreign_keys = ON');
-      db.execute('CREATE TABLE $tableName($colEmail TEXT PRIMARY KEY,$colName TEXT,$colPassword TEXT)');
-      db.execute('CREATE TABLE $table2Name($colId INTEGER PRIMARY KEY AUTOINCREMENT,$colNote TEXT,$colEmail TEXT REFERENCES $tableName($colEmail))');
+    return await openDatabase(dbPath,version: 1,onCreate: (db,version) async {
+      await db.execute('CREATE TABLE $tableName($colEmail TEXT PRIMARY KEY,$colName TEXT,$colPassword TEXT)');
+      await db.execute('CREATE TABLE $table2Name($colId INTEGER PRIMARY KEY AUTOINCREMENT,$colNote TEXT,$colEmail TEXT,FOREIGN KEY($colEmail) REFERENCES $tableName($colEmail) ON DELETE CASCADE)');
 
-    });
+    },
+    onOpen: (db)async{
+      await db.execute('PRAGMA foreign_keys = ON');
+    }
+    );
   }
   //queries
   //add user
@@ -62,6 +65,7 @@ class DBHelper{
 
   Future<bool> addNote({required String note,required String email})async{
     Database db = await getDB();
+    print("$note $email");
     int rowsAffected= await db.insert(table2Name,{colNote:note,colEmail:email});
     Utils.toast("Note Added", Colors.green);
     return rowsAffected>0;

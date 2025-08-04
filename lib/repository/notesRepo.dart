@@ -11,12 +11,13 @@ class NotesRepository{
     var res= await _db.getAllNotes(email);
     return res.map((e) => Note.fromMap(e)).toList();
   }
-  Future<void> addNote({required String note,required String email})async{
+  Future<void> adddNote({required String note,required String email})async{
+    print("repo");
     bool res = await _db.addNote(note: note, email: email);
     if(res){
-      Utils.toast("Note Added back to repo", Colors.green);
+      Utils.toast("Note Added", Colors.green);
     }else{
-      Utils.toast("Note Not Added back to repo", Colors.red);
+      Utils.toast("Note Not Added", Colors.red);
     }
   }
 
@@ -25,4 +26,12 @@ class NotesRepository{
     print(res);
 
   }
+  Future<void> deleteNote(int id) async {
+    bool res = await _db.deleteNote(id);
+    if(res)
+      Utils.toast("Note Deleted", Colors.green);
+    else
+      Utils.toast("Note Not Deleted", Colors.red);
+  }
+
 }

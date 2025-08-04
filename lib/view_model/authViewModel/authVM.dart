@@ -28,7 +28,6 @@ class AuthViewModel extends GetxController{
     if(sFormKey.currentState!.validate()){
       loggedUser.value = User(name: nameController.text, email: emailController.text, password: passwordController.text);
       Get.toNamed('/HomeScreen');
-      // formKey.currentState!.save();
       isLoading.value = true;
       _authRepo.addUser(email: emailController.text, name: nameController.text, password: passwordController.text);
       isLoading.value = false;
@@ -39,19 +38,23 @@ class AuthViewModel extends GetxController{
 
   Future<void> login() async {
     await getUsers();
-    if(fFormKey.currentState!.validate()){
-      loggedUser.value = User(email: emailController.text, password: passwordController.text);
-      for(var user in users){
-        if(user.email==emailController.text && user.password==passwordController.text){
-          Get.toNamed('/HomeScreen');
-          clearController();
-          break;
-        }else{
-          Utils.toast("Invalid Email or Password", Colors.red);
-        }
+    if (fFormKey.currentState!.validate()) {
+      final match =  users.firstWhereOrNull((user) =>
+      user.email == emailController.text &&
+          user.password == passwordController.text);
+
+      if (match != null) {
+        loggedUser.value = match; // ✅ set full user object
+        Get.toNamed('/HomeScreen');
+        clearController();
+        isLoading.value = false;
+        getUsers();
+      } else {
+        Utils.toast("Invalid Email or Password", Colors.red);
       }
     }
   }
+
 
 
 
